@@ -1,0 +1,4 @@
+youtube-transcript-api
+requests
+pytest
+pytest-cov
