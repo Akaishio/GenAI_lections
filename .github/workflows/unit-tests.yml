@@ -39,9 +39,10 @@ jobs:
 
     - name: Generate coverage badge
       if: github.event_name == 'push'
-      uses: tj-actions/coverage-badge-py@v2
-      with:
-        working-directory: ./3_1_LLM_agent
+      working-directory: ./3_1_LLM_agent
+      run: |
+        pip install "setuptools<81" coverage-badge
+        coverage-badge -o coverage.svg -f
 
     - name: Verify changed files
       uses: tj-actions/verify-changed-files@v14
