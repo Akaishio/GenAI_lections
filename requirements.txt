@@ -1,4 +1,6 @@
 youtube-transcript-api
 requests
+ddgs
 pytest
 pytest-cov
+python-decouple
