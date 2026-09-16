@@ -16,7 +16,7 @@ from llm_agent.tool_youtube import YoutubeTranscriptTool
 def test_calculator_query_live():
     """Реальный запуск агента для проверки математики."""
     # Для тестов лучше использовать локальную модель, если она поднята
-    agent = LLMAgent(local=True, ollama_model="qwen3:4b")
+    agent = LLMAgent(local=True, ollama_model="qwen2:0.5b")
     query = "Сколько будет (5 + 3) * 2? Напиши только цифру."
     
     response = agent.process_query(query)
@@ -28,7 +28,7 @@ def test_calculator_query_live():
 @pytest.mark.integration
 def test_football_query_live():
     """Реальный запуск агента для проверки поиска DuckDuckGo."""
-    agent = LLMAgent(local=True, ollama_model="qwen3:4b")
+    agent = LLMAgent(local=True, ollama_model="qwen2:0.5b")
     query = "Кто выиграл последний матч Спартак-Динамо?"
     
     response = agent.process_query(query)
