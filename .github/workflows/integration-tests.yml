@@ -23,10 +23,21 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Setup and Run Ollama
-      uses: pydantic/ollama-action@v3
-      with:
-        model: qwen2:0.5b
+    - name: Start Ollama in Docker
+      run: |
+        docker run -d --name ollama -p 11434:11434 ollama/ollama:latest
+        for i in {1..30}; do
+          if curl -s http://localhost:11434/api/tags > /dev/null; then
+            echo "Ollama is ready"
+            break
+          fi
+          echo "Waiting for Ollama..."
+          sleep 2
+        done
+
+    - name: Pull model
+      run: |
+        docker exec ollama ollama pull qwen2:0.5b
 
     - name: Run integration tests
       working-directory: ./3_1_LLM_agent
