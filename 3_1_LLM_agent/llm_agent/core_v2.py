@@ -7,6 +7,7 @@ from decouple import config
 
 from .tool_calculator import CalculatorTool
 from .tool_websearch import WebSearchTool
+from .tool_youtube import YoutubeTranscriptTool
 
 class LLMAgent:
     """
@@ -42,6 +43,7 @@ class LLMAgent:
         self.tools = {
             "calculator": CalculatorTool(),
             "web_search": WebSearchTool(),
+	    "youtube_transcript": YoutubeTranscriptTool(),
         }
         self.conversation_history = []
     
@@ -87,6 +89,7 @@ class LLMAgent:
         Available tools:
         - **calculator**: For any math-related questions (numbers, calculations). Use it with the full expression.
         - **web_search**: For finding any information about the real world (current events, facts, definitions). Use it with the user's question or a clear search query. USE ONLY RUSSIAN LANGUAGE QUERIES in this tool.
+        - **youtube_transcript**: For getting a transcript and summary of a YouTube video. Use it with a YouTube URL.
 
         Your response MUST be ONLY a JSON object of the following format.
         If one or more tools are needed to answer, return JSON of this structure:
