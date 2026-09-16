@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -24,9 +27,33 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run unit tests
+    - name: Run tests with coverage
       working-directory: ./3_1_LLM_agent
       env:
         PYTHONPATH: .
       run: |
-        pytest tests/test_agent.py -m "not integration" -v
+        pytest tests/test_agent.py -m "not integration" \
+          --cov=llm_agent.tool_youtube \
+          --cov-report=xml \
+          --cov-report=term-missing
+
+    - name: Generate coverage badge
+      if: github.event_name == 'push'
+      uses: tj-actions/coverage-badge-py@v2
+      with:
+        working-directory: ./3_1_LLM_agent
+
+    - name: Verify changed files
+      uses: tj-actions/verify-changed-files@v14
+      id: verify-changed-files
+      with:
+        files: 3_1_LLM_agent/coverage.svg
+
+    - name: Commit coverage badge
+      if: steps.verify-changed-files.outputs.files_changed == 'true'
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add 3_1_LLM_agent/coverage.svg
+        git commit -m "Update coverage badge"
+        git push
